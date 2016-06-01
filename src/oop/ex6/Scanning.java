@@ -12,10 +12,7 @@ public class Scanning {
 
 
 
-    public static void main(String[] var0) throws FileNotFoundException {
-        Scanning var1 = new Scanning(var0);
-        var1.run();
-    }
+
 
     public Scanning(String[] var1) {
         checking = var1[0];
