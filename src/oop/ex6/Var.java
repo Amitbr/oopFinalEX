@@ -16,6 +16,16 @@ class Var {
         isFinal = isAFinal;
     }
 
+    public String getName() {
+        return this.name;
+    }
+
+    public boolean getValue() {
+        if (this.value) {
+            return true;
+        }
+        return false;
+    }
 
     void changeToFinal() throws SyntaxException{
         if(!value){

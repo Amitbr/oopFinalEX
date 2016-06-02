@@ -1,6 +1,6 @@
-package oopFinalEX.src.oop.ex6;
+package oop.ex6;
 
-import java.util.*t;
+import java.util.*;
 
 /**
  * Created by Elon on 01/06/2016.
@@ -8,7 +8,7 @@ import java.util.*t;
 public class LinkArrayVar {
 
     private LinkArrayVar myArray;
-    private LinkedList myList;
+    private LinkedList<Var> myList;
 
     public void LinkArrayVar (LinkArrayVar varArray, LinkedList varList) {
         myArray = varArray;
@@ -18,8 +18,8 @@ public class LinkArrayVar {
     public boolean member(String varName) {
         ListIterator varListIterator = myList.listIterator();
         while (varListIterator.hasNext()){
-            Var myVar = varListIterator.next();
-            if (var.getName().equals(varName)) {
+            Var myVar = (Var) varListIterator.next();
+            if (myVar.getName().equals(varName)) {
                 return true;
             }
         }
@@ -29,14 +29,14 @@ public class LinkArrayVar {
     public boolean memberWithValue(String varName) throws SyntaxException {
         ListIterator varListIterator = myList.listIterator();
         while (varListIterator.hasNext()){
-            Var myVar = varListIterator.next();
-            if (var.name().equals(varName)) {
-                if (var.value) {
+            Var myVar = (Var) varListIterator.next();
+            if (myVar.getName().equals(varName)) {
+                if (myVar.getValue()) {
                     return true;
                 }
                 return false;
             }
         }
-        throw  new syntaxException();
+        throw new SyntaxException();
     }
 }
