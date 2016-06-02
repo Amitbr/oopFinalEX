@@ -55,7 +55,7 @@ public class Scanning {
                 if (inFunction) {
                     allFunction = (allFunction + " " + line);
                 }
-                if (line.matches("\\s*v\\s?o\\s?i\\s?d\\s+.+")) {
+                if (line.matches("void .+")) {
                     inFunction = true;
                 }
             }
