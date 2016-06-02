@@ -16,6 +16,7 @@ class Var {
         isFinal = isAFinal;
     }
 
+
     void changeToFinal() throws SyntaxException{
         if(!value){
             throw new SyntaxException();

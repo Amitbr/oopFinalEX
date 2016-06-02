@@ -66,21 +66,21 @@ public class Scanning {
         return functionsList;
     }
 
-    public boolean runInBarckets (Scanner scan){
-        String line = scan.next();
-        while (scan.hasNext()) {
-            if (line.startsWith("\\")) {
-                line = scan.next();
-            }
-            /*checkLine (line);*/
-            line = scan.next();
-            if (line.endsWith("{ *")) {
-                runInBarckets(scan);
-            }
-            else if (line.equals(" *} *")) {
-                return true;
-            }
-        }
-        return false;
-    }
+//    public boolean runInBarckets (Scanner scan){
+//        String line = scan.next();
+//        while (scan.hasNext()) {
+//            if (line.startsWith("\\")) {
+//                line = scan.next();
+//            }
+//           /*checkLine (line);*/
+//            line = scan.next();
+//            if (line.endsWith("{ *")) {
+//                runInBarckets(scan);
+//            }
+//            else if (line.equals(" *} *")) {
+//                return true;
+//            }
+//        }
+//        return false;
+//    }
 }
