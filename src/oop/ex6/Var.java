@@ -38,6 +38,7 @@ class Var {
         value = varValue;
         isFinal = isAFinal;
     }
+    //כל הפונקציות הן כדי לא לגעת במשתנה ישירות מהפונקציות האחרות
 
     /*
      * A function that return the Var name.

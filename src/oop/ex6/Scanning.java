@@ -76,12 +76,14 @@ public class Scanning {
                 }
                 if ((difference == 0) && (!allFunction.equals(""))) {
                     inFunction = false;
+                    //האיבר הראשון הוא השורה ללא ה} והאיבר השני הוא סטרינג של כל הפונקציה עם אנטרים בין שורה לשורה
                     String[] myArray = {parametersFunction, allFunction};
                     functionsList.add(myArray);
                     allFunction = "";
                     parametersFunction = "";
                 }
                 if ((difference == 0) && (allFunction.equals(""))) {
+                    // יצרתי רשימה של המשתנים בעזרת הvarfactory ואז בדקתי שאין שניים באותו שם, כי אנחנו בגלובל עמוד 5 הערה רביעית
                     tempVarList = varFactory.createVars(line);
                     for (Var var : tempVarList) {
                         if (newVar(var, varList)) {
@@ -105,6 +107,7 @@ public class Scanning {
             throw new SyntaxException();
         }
         for (String[] myStrings: functionsList) {
+            //כאן עוברים על כל הפונקציות, אחרי שיש רשימה כבר של כל הגלובלים, בהתאם לclass של functionparamaters
             FunctionParameter runFunction = new FunctionParameter(myStrings[0], varList, myStrings[1]);
         }
     }
