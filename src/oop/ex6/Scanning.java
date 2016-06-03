@@ -6,30 +6,54 @@ import java.util.*;
 /**
  * Created by Elon on 30/05/2016.
  */
+
+/**
+ * this class scan on the file and check his correctness.
+ */
 public class Scanning {
 
-    String checking;
+    /*
+     * the String to check.
+     */
+    private String checking;
+
+    /*
+     * A LinkArrayVar of all the global Vars.
+     */
     private LinkArrayVar globalArrayVar;
+
+    /*
+     * A LinkedList of functionParameters.
+     */
     private LinkedList<FunctionParameter> myFunctions;
 
+    /**
+     * A constructor that get file and creates new scanning.
+     */
     public Scanning(String[] var1) {
         globalArrayVar = new LinkArrayVar();
         checking = var1[0];
     }
 
+    /**
+     * A function that run the main.
+     */
     public void run() throws FileNotFoundException, SyntaxException {
         try {
             File file = new File(checking);
             InputStream input = new FileInputStream(file);
             Scanner s = new Scanner(input).useDelimiter("(\\r\\n)");
-            firstChecking(s);
+            readTheFile(s);
             input.close();
         } catch (IOException e) {
             e.printStackTrace();
         }
     }
 
-    public void firstChecking(Scanner scan) throws SyntaxException {
+    /**
+     * A function that read the file and check him, use another functions.
+     */
+    public void readTheFile(Scanner scan) throws SyntaxException {
         int difference = 0;
         LinkedList<Var> varList = new LinkedList<Var>();
         LinkedList<Var> tempVarList = new LinkedList<Var>();
@@ -60,7 +84,12 @@ public class Scanning {
                 if ((difference == 0) && (allFunction.equals(""))) {
                     tempVarList = varFactory.createVars(line);
                     for (Var var : tempVarList) {
-                        varList.add(var);
+                        if (newVar(var, varList)) {
+                            varList.add(var);
+                        }
+                        else {
+                            throw new SyntaxException();
+                        }
                     }
                 }
                 if (inFunction) {
@@ -80,7 +109,22 @@ public class Scanning {
         }
     }
 
+    /*
+     * A function that end line before the char {.
+     */
     private String split (String  line, char c) {
         return line.substring(0, line.indexOf(c)-1);
+    }
+
+    /*
+     * A function that check there is no another variable with this name.
+     */
+    private boolean newVar(Var varElement, LinkedList<Var> varlist) {
+        for (Var var: varlist) {
+            if (var.getName().equals(varElement.getName())) {
+                return false;
+            }
+        }
+        return true;
     }
 }
