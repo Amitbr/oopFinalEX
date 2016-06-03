@@ -10,9 +10,14 @@ public class LinkArrayVar {
     private LinkArrayVar myArray;
     private LinkedList<Var> myList;
 
-    public void LinkArrayVar (LinkArrayVar varArray, LinkedList varList) {
+    public void LinkArrayVar (LinkArrayVar varArray) {
         myArray = varArray;
-        myList = varList;
+        myList =  new LinkedList<>();
+    }
+
+    public void LinkArrayVar () {
+        myArray = null;
+        myList =  new LinkedList<>();
     }
 
     public boolean member(String varName) {

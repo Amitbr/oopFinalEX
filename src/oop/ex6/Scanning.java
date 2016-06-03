@@ -9,16 +9,15 @@ import java.util.*;
 public class Scanning {
 
     String checking;
-
-
-
-
+    private LinkArrayVar globalArrayVar;
+    private LinkedList<FunctionParameter> myFunctions;
 
     public Scanning(String[] var1) {
+        globalArrayVar = new LinkArrayVar();
         checking = var1[0];
     }
 
-    public void run() throws FileNotFoundException  {
+    public void run() throws FileNotFoundException, SyntaxException {
         try {
             File file = new File(checking);
             InputStream input = new FileInputStream(file);
@@ -30,11 +29,15 @@ public class Scanning {
         }
     }
 
-    public LinkedList<String> firstChecking (Scanner scan) {
+    public void firstChecking(Scanner scan) throws SyntaxException {
         int difference = 0;
-        LinkedList<String> functionsList = new LinkedList<String>();
+        LinkedList<Var> varList = new LinkedList<Var>();
+        LinkedList<Var> tempVarList = new LinkedList<Var>();
+        LinkedList<String[]> functionsList = new LinkedList<String[]>();
         boolean inFunction = false;
+        String parametersFunction = "";
         String allFunction = "";
+        VarsFactory varFactory = new VarsFactory();
         while (scan.hasNext()) {
             String line = scan.next();
             if (!line.matches("\\{2}.*")) {
@@ -45,42 +48,39 @@ public class Scanning {
                     difference++;
                 }
                 if (difference < 0) {
-                    return null;
+                    throw new SyntaxException();
                 }
                 if ((difference == 0) && (!allFunction.equals(""))) {
                     inFunction = false;
-                    functionsList.add(allFunction);
+                    String[] myArray = {parametersFunction, allFunction};
+                    functionsList.add(myArray);
                     allFunction = "";
+                    parametersFunction = "";
+                }
+                if ((difference == 0) && (allFunction.equals(""))) {
+                    tempVarList = varFactory.createVars(line);
+                    for (Var var : tempVarList) {
+                        varList.add(var);
+                    }
                 }
                 if (inFunction) {
-                    allFunction = (allFunction + " " + line);
+                    allFunction = (allFunction + "\n" + line);
                 }
-                if (line.matches("void .+")) {
+                if (line.matches("void .+ \\{")) {
+                    parametersFunction = split(line, '}');
                     inFunction = true;
                 }
             }
         }
         if (difference > 0) {
-            return null;
+            throw new SyntaxException();
         }
-        return functionsList;
+        for (String[] myStrings: functionsList) {
+            FunctionParameter runFunction = new FunctionParameter(myStrings[0], varList, myStrings[1]);
+        }
     }
 
-//    public boolean runInBarckets (Scanner scan){
-//        String line = scan.next();
-//        while (scan.hasNext()) {
-//            if (line.startsWith("\\")) {
-//                line = scan.next();
-//            }
-//           /*checkLine (line);*/
-//            line = scan.next();
-//            if (line.endsWith("{ *")) {
-//                runInBarckets(scan);
-//            }
-//            else if (line.equals(" *} *")) {
-//                return true;
-//            }
-//        }
-//        return false;
-//    }
+    private String split (String  line, char c) {
+        return line.substring(0, line.indexOf(c)-1);
+    }
 }
