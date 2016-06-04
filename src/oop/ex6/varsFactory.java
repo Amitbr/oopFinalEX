@@ -122,8 +122,57 @@ public class VarsFactory {
         return new Var(name, savedWord.getVALUE(), isAssignedWithValue, false);
     }
 
-    static void updateVar(String line){
-
+    /*
+     * A function that change exist variable.
+     */
+    static void updateVar(String line, LinkedList<Var> varList) throws SyntaxException {
+        LinkArrayVar myArrayVar = new LinkArrayVar(varList);
+        Pattern updateFirstCheck = Pattern.compile("\\s*(([_]{1}[\\w]+)|([a-zA-Z]+[\\w]*))\\s*=.+");
+        Matcher update = updateFirstCheck.matcher(line);
+        if (update.matches()) {
+            //אחרי בדיקה שהשורה היא א=ב, בודקים אאם הערך הוא מהסוג של המשתנה
+            Var myVar = myArrayVar.member(update.group(1));
+            if ((myVar != null) && (!myVar.getFinal())) {
+                switch (myVar.getType()) {
+                    case "int":
+                        if (line.matches(".+=\\s?-?\\d+\\s*;\\s*")) {
+                            myVar.setValue();
+                            return;
+                        }
+                    case "double":
+                        if (line.matches(".+=\\s*-?\\d[\\d]*\\.\\d[\\d]*\\s*;\\s*|.+=\\s?-?\\d+\\s*;\\s*")) {
+                            myVar.setValue();
+                            return;
+                        }
+                    case "boolean":
+                        if (line.matches(".+=\\s*(-?\\d+\\.\\d+|-?\\d+|true|false)\\s*;\\s*")) {
+                            myVar.setValue();
+                            return;
+                        }
+                    case "char":
+                        if (line.matches(".+=\\s*'.'\\s*;\\s*")) {
+                            myVar.setValue();
+                            return;
+                        }
+                    case "String":
+                        if (line.matches(".+=\\s*\".+\"\\s*;\\s*")) {
+                            myVar.setValue();
+                            return;
+                        }
+                }
+                Pattern updateSecondCheck = Pattern.compile(".+=\\s?(([_]{1}[\\w]+)|([a-zA-Z]+[\\w]*))\\s*;\\s*");
+                Matcher updateTwo = updateSecondCheck.matcher(line);
+                Var varTwo = myArrayVar.member(updateTwo.group(1));
+                //בודקים אם השיוויון הוא למשתנה, ואם המשתנה הוא מאותו סוג
+                //I think that it's right to write boolean a = 5, but it's wrong that boolean a = int c (=  5)
+                if ((varTwo != null) && (varTwo.getValue()) &&
+                        (myVar.getType().equals(varTwo.getType()) && (!myVar.getFinal()))) {
+                    myVar.setValue();
+                    return;
+                    }
+            }
+        }
+        throw new SyntaxException();
     }
 
 }
