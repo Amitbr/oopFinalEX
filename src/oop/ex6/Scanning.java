@@ -64,7 +64,7 @@ public class Scanning {
         VarsFactory varFactory = new VarsFactory();
         while (scan.hasNext()) {
             String line = scan.next();
-            if (!line.matches("\\{2}.*")) {
+            if ((!line.startsWith("\\")) && (!line.matches("(\\s)*"))) {
                 if (line.matches("\\s*}")) {
                     difference--;
                 }
@@ -98,7 +98,7 @@ public class Scanning {
                     allFunction = (allFunction + "\n" + line);
                 }
                 if (line.matches("void .+ \\{")) {
-                    parametersFunction = split(line, '}');
+                    parametersFunction = splitLine(line, '}');
                     inFunction = true;
                 }
             }
@@ -115,7 +115,7 @@ public class Scanning {
     /*
      * A function that end line before the char {.
      */
-    private String split (String  line, char c) {
+    private String splitLine (String  line, char c) {
         return line.substring(0, line.indexOf(c)-1);
     }
 
